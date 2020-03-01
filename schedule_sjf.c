@@ -83,13 +83,13 @@
         i -= 1;
         }
         
-   //     printing();
+        printing();
     }
 
-    // void printing() {
-    //     node = head;
-    //     while (node != NULL) {
-    //         printf("[%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
-    //         node = node->next;
-    //     }
-    // }
+    void printing() {
+        node = head;
+        while (node != NULL) {
+            printf("[%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
+            node = node->next;
+        }
+    }

@@ -8,16 +8,15 @@
 #define SIZE    100
 
 
-    int WaitTime[8];
-    int TurnTime[8];
-    int burstTime[8];
-    int totalwait = 0;
-    int totalturn = 0;
+    int WTime[SIZE];
+    int TTime[SIZE];
+    int bTime[SIZE];
+    int twait = 0;
+    int tturn = 0;
 
     struct node * node = NULL;
     struct node * head = NULL;
     struct node * tail = NULL;
-    struct node **IO_head;
 
     void add(char *n, int prty, int brst) {  // add the task to the scheduler's list of tasks
 
@@ -31,7 +30,6 @@
 
             //printf("[%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
             
-            
             head = node;
             tail = head;
             head -> next = NULL;
@@ -44,84 +42,108 @@
 
             //printf("[%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
 
-
             tail -> next = node;
             tail = node;
             node -> next = NULL;
-            
         }
     }
 
     void schedule() {
 
-    struct node *temp;
-    temp = head;
-    int i = 0;
-    int iterations = 0;
+        struct node *temp;
+        struct node *temp2;
+        temp = head;
+        temp2 = head;
+        int i = 0;
+        int iterations = 0;
 
+        int number = 0;
+        while (temp2 != NULL) {
+           number = number + 1;
+           //printf("the value in original burst is %d\n", originalBurstTimes[j]);
+           temp2 = temp2->next;
+       }
+        
+    //    while (temp != NULL) {
+    //        originalBurstTimes[j] = temp->task->burst;
+    //        //printf("the value in original burst is %d\n", originalBurstTimes[j]);
+    //        temp = temp->next;
+    //    }
 
-    while(head != NULL) {
+        //printf("[%s] [%d] [%d]\n",temp->task->name, temp->task->priority, temp->task->burst);
+
         while (temp != NULL) {
+            while (temp != NULL) {
+
             if (iterations == 0) {
                 if (temp == head) {
                     if (temp->task->burst - 10 > 0) {
+                        printf("Running task = [%s] [%d] [%d] for %d units.\n",temp->task->name, temp->task->priority, temp->task->burst, 10);
+                        //run(temp->task, 10);
                         temp->task->burst -= 10;
-                        WaitTime[i] = 0;
-                        burstTime[i] = temp->task->burst;
-                        TurnTime[i] = burstTime[i];
-                        totalturn += TurnTime[i];
+                        WTime[i] = 0;
+                        bTime[i] = 10;
+                        TTime[i] = bTime[i];
+                        tturn += TTime[i];
+                        temp = temp->next;
                     }
                     else {
-                        WaitTime[i] = 0;
-                        burstTime[i] = temp->task->burst;
-                        TurnTime[i] = burstTime[i];
-                        totalturn += TurnTime[i];
-                        delete(&temp, temp->task);
+                        WTime[i] = 0;
+                        bTime[i] = temp->task->burst;
+                        TTime[i] = bTime[i];
+                        tturn += TTime[i];
+                        delete(&head, temp->task);
                         // DELETE NODE
                     }
                 i += 1;
-                temp = temp->next;
+                iterations += 1;
                 }
                 iterations += 1;
-                
             }
             else {
                 if (temp->task->burst - 10 > 0) {
+                    printf("Running task = [%s] [%d] [%d] for %d units.\n",temp->task->name, temp->task->priority, temp->task->burst, 10);
+                        //run(temp->task, 10);
                         temp->task->burst -= 10;
-                        burstTime[i] = temp->task->burst;
-                        TurnTime[i] = burstTime[i];
-                        totalturn += TurnTime[i];
+                        WTime[i] = bTime[i-1] + WTime[i-1];
+                        bTime[i] = 10;
+                        TTime[i] = bTime[i] + WTime[i];
+                        tturn += TTime[i];
+                        twait += WTime[i];
+                        if (temp->next == tail && tail->task->burst - 10 <= 0) {
+                            printf("Running task = [%s] [%d] [%d] for %d units.\n",tail->task->name, tail->task->priority, tail->task->burst, tail->task->burst);
+                            //run(tail->task, tail->task->burst);
+
+                            temp->next = NULL;
+                        }
+                        temp = temp->next;
                 }
                 else {
-                        burstTime[i] = temp->task->burst;
-                        TurnTime[i] = burstTime[i];
-                        totalturn += TurnTime[i];
-                        delete(&temp, temp->task);
+                        //run(temp->task, temp->task->burst);
+                        printf("Running task = [%s] [%d] [%d] for %d units.\n",temp->task->name, temp->task->priority, temp->task->burst, temp->task->burst);
+                        //temp->task->burst = 0;
+                        WTime[i] = bTime[i-1] + WTime[i-1];
+                        bTime[i] = temp->task->burst;
+                        TTime[i] = bTime[i] + WTime[i];
+                        tturn += TTime[i];
+                        twait += WTime[i];
+                        delete(&head, temp->task);
+                        temp = temp->next;
                         // DELETE NODE
-                    }
-                WaitTime[i] = burstTime[i-1] + WaitTime[i-1];
-                i += 1;  
-                temp = temp->next;
-            }
+                }
+                i += 1;
+            }       
+            //printf("[%s] [%d] [%d]\n",temp->task->name, temp->task->priority, temp->task->burst); 
         }
         temp = head;
-       // iterations += 1;
-    }
+        }
 
-    totalwait = totalwait / 8;
-    totalturn = totalturn / 8;
-    printf("Average Wait Time: %d\n", totalwait);
-    printf("Average Turnaround Time: %d\n", totalturn);
+    twait = twait / number;
+    tturn = tturn / number;
+    printf("Average Wait Time: %d\n", twait);
+    printf("Average Turnaround Time: %d\n", tturn);
+        
 
     }
         
-   //     printing();
-    
 
-    // void printing() {
-    //     node = head;
-    //     while (node != NULL) {
-    //         printf("[%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
-    //         node = node->next;
-    //     }
-    // }

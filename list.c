@@ -29,21 +29,24 @@ void insert(struct node **head, Task *newTask) {
 void delete(struct node **head, Task *task) {
     struct node *temp;
     struct node *prev;
-
     temp = *head;
+
     // special case - beginning of list
     if (strcmp(task->name,temp->task->name) == 0) {
+       // printf("head is [%s] [%d] [%d] before making it next\n",(*head)->task->name, (*head)->task->priority, (*head)->task->burst);
         *head = (*head)->next;
+        //task = NULL;       
+        //printf("head is [%s] [%d] [%d] after making it next\n",(*head)->task->name, (*head)->task->priority, (*head)->task->burst);
     }
-    else {
+    else if (strcmp(task->name,temp->task->name) != 0){
         // interior or last element in the list
         prev = *head;
         temp = temp->next;
         while (strcmp(task->name,temp->task->name) != 0) {
             prev = temp;
             temp = temp->next;
+            //printf("hello\n");
         }
-
         prev->next = temp->next;
     }
 }
