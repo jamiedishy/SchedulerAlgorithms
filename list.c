@@ -15,6 +15,7 @@
     int totalwait = 0;
     int totalturn = 0;
     int number = 0;
+    int responseTime = 0;
 
 // add a new task to the list of tasks
 void insert(struct node **head, Task *newTask) {
@@ -74,6 +75,7 @@ void traverse(struct node *head) {
             burstTime[i] = temp->task->burst;
             WaitTime[i] = burstTime[i-1] + WaitTime[i-1];
             TurnTime[i] = WaitTime[i] + burstTime[i];
+            responseTime += WaitTime[i-1] + burstTime[i-1];
             totalturn += TurnTime[i];
             totalwait += WaitTime[i];
            // printf("The turn time is %d\n", TurnTime[i]);
@@ -84,7 +86,9 @@ void traverse(struct node *head) {
    // printf("the total turn time is %d\n", totalturn);
     totalwait = totalwait / number;
     totalturn = totalturn / number;
+    responseTime = responseTime / number;
     //printf("the value of number is %d\n", number);
     printf("Average Wait Time: %d\n", totalwait);
     printf("Average Turnaround Time: %d\n", totalturn);
+    printf("Average Response Time: %d\n", responseTime);
 }

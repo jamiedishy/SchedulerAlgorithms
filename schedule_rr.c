@@ -14,6 +14,7 @@
     int bTime[SIZE];
     int twait = 0;
     int tturn = 0;
+    int responseTime[SIZE];
 
     struct node * node = NULL;
     struct node * head = NULL;
@@ -57,8 +58,8 @@
         temp2 = head;
         int i = 0;
         int iterations = 0;
-
         int number = 0;
+
         while (temp2 != NULL) {
            number = number + 1;
            //printf("the value in original burst is %d\n", originalBurstTimes[j]);
@@ -74,6 +75,7 @@
                         printf("Running task = [%s] [%d] [%d] for %d units.\n",temp->task->name, temp->task->priority, temp->task->burst, 10);
                         //run(temp->task, 10);
                         temp->task->burst -= 10;
+                        responseTime[i] = 0;
                         WTime[i] = 0;
                         bTime[i] = 10;
                         TTime[i] = bTime[i];
@@ -81,6 +83,7 @@
                         temp = temp->next;
                     }
                     else {
+                        responseTime[i] = 0;
                         WTime[i] = 0;
                         bTime[i] = temp->task->burst;
                         TTime[i] = bTime[i];
@@ -100,6 +103,7 @@
                         temp->task->burst -= 10;
                         WTime[i] = bTime[i-1] + WTime[i-1];
                         bTime[i] = 10;
+                        responseTime[i] = bTime[i-1] + WTime[i-1];
                         TTime[i] = bTime[i] + WTime[i];
                         tturn += TTime[i];
                         twait += WTime[i];
@@ -116,6 +120,7 @@
                         printf("Running task = [%s] [%d] [%d] for %d units.\n",temp->task->name, temp->task->priority, temp->task->burst, temp->task->burst);
                         WTime[i] = bTime[i-1] + WTime[i-1];
                         bTime[i] = temp->task->burst;
+                        responseTime[i] = bTime[i-1] + WTime[i-1];
                         TTime[i] = bTime[i] + WTime[i];
                         tturn += TTime[i];
                         twait += WTime[i];
@@ -129,11 +134,20 @@
         temp = head;
         }
 
+    int rtime = 0;
+
+    for (int i = 0; i < number; i++) {
+        rtime += i * 10;
+        //printf("the value of counter and response tme is %d %d\n", i, rtime);
+    }
+
+    rtime = rtime / number;
     twait = twait / number;
     tturn = tturn / number;
     //printf("the value of number is %d\n", number);
     printf("Average Wait Time: %d\n", twait);
     printf("Average Turnaround Time: %d\n", tturn);
+    printf("Average Response Time: %d\n", rtime);
         
     }
 

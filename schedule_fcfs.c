@@ -44,6 +44,7 @@
 
     void schedule() {
        traverse(head);
+       
     }
 
 
