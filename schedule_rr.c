@@ -63,14 +63,6 @@
            //printf("the value in original burst is %d\n", originalBurstTimes[j]);
            temp2 = temp2->next;
        }
-        
-    //    while (temp != NULL) {
-    //        originalBurstTimes[j] = temp->task->burst;
-    //        //printf("the value in original burst is %d\n", originalBurstTimes[j]);
-    //        temp = temp->next;
-    //    }
-
-        //printf("[%s] [%d] [%d]\n",temp->task->name, temp->task->priority, temp->task->burst);
 
         while (temp != NULL) {
             while (temp != NULL) {
@@ -121,7 +113,6 @@
                 else {
                         //run(temp->task, temp->task->burst);
                         printf("Running task = [%s] [%d] [%d] for %d units.\n",temp->task->name, temp->task->priority, temp->task->burst, temp->task->burst);
-                        //temp->task->burst = 0;
                         WTime[i] = bTime[i-1] + WTime[i-1];
                         bTime[i] = temp->task->burst;
                         TTime[i] = bTime[i] + WTime[i];
@@ -129,7 +120,6 @@
                         twait += WTime[i];
                         delete(&head, temp->task);
                         temp = temp->next;
-                        // DELETE NODE
                 }
                 i += 1;
             }       
@@ -140,6 +130,7 @@
 
     twait = twait / number;
     tturn = tturn / number;
+    printf("the value of number is %d\n", number);
     printf("Average Wait Time: %d\n", twait);
     printf("Average Turnaround Time: %d\n", tturn);
         

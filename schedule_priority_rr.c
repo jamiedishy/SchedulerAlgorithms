@@ -11,6 +11,7 @@
     struct node * head = NULL;
     struct node * tail = NULL;
     struct node * hh = NULL;
+    int numberNodes = 0;
 
     int WTime[SIZE];
     int TTime[SIZE];
@@ -24,6 +25,7 @@
     int count = 0;
 
     void add(char *n, int prty, int brst) {  // add the task to the scheduler's list of tasks
+        numberNodes += 1;
 
         node = malloc(sizeof(struct node));
 
@@ -32,8 +34,6 @@
             node -> task -> name = n;
             node -> task -> priority = prty;
             node -> task -> burst = brst;
-
-            //printf("[%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
             
             hh = node;
             head = node;
@@ -46,9 +46,6 @@
             node -> task -> priority = prty;
             node -> task -> burst = brst;
 
-            //printf("[%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
-
-
             tail -> next = node;
             tail = node;
             node -> next = NULL;
@@ -58,10 +55,9 @@
 
     schedule() {
         sortLinkedList(head);
-        //traverse(head);
     }
 
-    void sortLinkedList(struct node *head) {
+    void sortLinkedList(struct node *head) { // sorted by priority
         struct node *node=NULL, *temp = NULL;
         char * tempname;
         int temppriority;
@@ -94,12 +90,12 @@
             }
         i -= 1;
         }
-        //count = 0;
         printing(hh);
-        twait = twait / 8;
-    tturn = tturn / 8;
-    printf("Average Wait Time: %d\n", twait);
-    printf("Average Turnaround Time: %d\n", tturn);
+        twait = twait / numberNodes;
+        tturn = tturn / numberNodes;
+        printf("nimber of nodes is %d\n", numberNodes);
+        printf("Average Wait Time: %d\n", twait);
+        printf("Average Turnaround Time: %d\n", tturn);
     }
 
     void printing(struct node * h) {
