@@ -65,6 +65,7 @@
            //printf("the value in original burst is %d\n", originalBurstTimes[j]);
            temp2 = temp2->next;
        }
+       
 
         while (temp != NULL) {
             while (temp != NULL) {
@@ -77,6 +78,7 @@
                         temp->task->burst -= 10;
                         responseTime[i] = 0;
                         WTime[i] = 0;
+                        //aveWaitTime(temp);
                         bTime[i] = 10;
                         TTime[i] = bTime[i];
                         tturn += TTime[i];
@@ -85,6 +87,7 @@
                     else {
                         responseTime[i] = 0;
                         WTime[i] = 0;
+                        //aveWaitTime(temp);
                         bTime[i] = temp->task->burst;
                         TTime[i] = bTime[i];
                         tturn += TTime[i];
@@ -101,6 +104,7 @@
                     printf("Running task = [%s] [%d] [%d] for %d units.\n",temp->task->name, temp->task->priority, temp->task->burst, 10);
                         //run(temp->task, 10);
                         temp->task->burst -= 10;
+                        //aveWaitTime(temp);
                         WTime[i] = bTime[i-1] + WTime[i-1];
                         bTime[i] = 10;
                         responseTime[i] = bTime[i-1] + WTime[i-1];
@@ -118,12 +122,14 @@
                 else {
                         //run(temp->task, temp->task->burst);
                         printf("Running task = [%s] [%d] [%d] for %d units.\n",temp->task->name, temp->task->priority, temp->task->burst, temp->task->burst);
+                        //aveWaitTime(temp);
                         WTime[i] = bTime[i-1] + WTime[i-1];
                         bTime[i] = temp->task->burst;
                         responseTime[i] = bTime[i-1] + WTime[i-1];
                         TTime[i] = bTime[i] + WTime[i];
                         tturn += TTime[i];
                         twait += WTime[i];
+                        temp->task->burst = 0; // MSC
                         delete(&head, temp->task);
                         temp = temp->next;
                 }
@@ -151,3 +157,55 @@
         
     }
 
+    void aveWaitTime(struct node * task) {
+        struct node * temp2 = NULL;
+        temp2 = head;
+        int number = 0;
+
+        while (temp2 != NULL) {
+           number = number + 1;
+           //printf("the value in original burst is %d\n", originalBurstTimes[j]);
+           temp2 = temp2->next;
+       }
+       int waitTime[number];
+       struct node * temp = NULL;
+       temp = head;
+       int taskHasBurst[number];
+       int count = 0;
+
+       while (temp->task->name != task->task->name) { // which node number are we currently dealing with
+           count += 1;
+           temp = temp->next;
+       }
+
+        struct node * t1 = NULL;
+       t1 = head;
+       int counting = 0;
+       while (t1 != NULL) {
+           if (t1->task->burst <= 0) {
+               taskHasBurst[counting] = 1;
+           }
+           else {
+               taskHasBurst[counting] = 0;
+           }
+           t1 = t1->next;
+           counting += 1;
+       }
+
+       struct node * t2 = NULL;
+       for (int i = 0; i < number; i++) {
+           if (i != count) {
+               if (taskHasBurst[i] != 1) {
+                   waitTime[i] += t2->task->burst;
+               }
+           }
+       }
+       int sum = 0;
+       for (int i = 0; i < number; i++ ){
+           sum = 0;
+           sum += waitTime[i];
+           printf("sum is %d\n", sum);
+       }
+       // printf("The average wait time is %d\n", sum/number);
+
+    }

@@ -62,7 +62,7 @@
             while (node != NULL) {
                 temp = node;
                 while (temp->next != NULL) {
-                    if (temp->task->priority > temp->next->task->priority) {
+                    if (temp->task->priority < temp->next->task->priority) {
                         tempname = temp->task->name;
                         temppriority = temp->task->priority;
                         tempburst = temp->task->burst;

@@ -70,7 +70,7 @@
             while (node != NULL) {
                 temp = node;
                 while (temp->next != NULL) {
-                    if (temp->task->priority > temp->next->task->priority) {
+                    if (temp->task->priority < temp->next->task->priority) {
                         tempname = temp->task->name;
                         temppriority = temp->task->priority;
                         tempburst = temp->task->burst;
@@ -133,6 +133,7 @@
                     while (count > 0) {
                         count -= 1;
                         temp = temp -> next; 
+                        //printf("hi\n");
                     }
                 }
                 if (!temp->task->burst > 0) {
@@ -162,10 +163,10 @@
                     TTime[i] = bTime[i] + WTime[i];
                     tturn += TTime[i];
                     twait += WTime[i];
-                    if (temp->next == tail && tail->task->burst - 10 <= 0) {
-                        printf("Running task = [%s] [%d] [%d] for %d units.\n",tail->task->name, tail->task->priority, tail->task->burst, tail->task->burst);                
-                        temp->next = NULL;
-                    }
+                    // if (temp->next == tail && tail->task->burst - 10 <= 0) {
+                    //     //printf("Running task = [%s] [%d] [%d] for %d units.\n",tail->task->name, tail->task->priority, tail->task->burst, tail->task->burst);                
+                    //     //temp->next = NULL;
+                    // }
                     if (temp->next == NULL) {
                         break;
                     }
@@ -186,6 +187,7 @@
                     else {
                     temp = temp->next;
                     }
+                    //printf("heihfljsal\n");
                     flag = 1;
             }
             i += 1;
