@@ -93,7 +93,7 @@
         printing(hh);
         twait = twait / numberNodes;
         tturn = tturn / numberNodes;
-        printf("nimber of nodes is %d\n", numberNodes);
+        // printf("nimber of nodes is %d\n", numberNodes);
         printf("Average Wait Time: %d\n", twait);
         printf("Average Turnaround Time: %d\n", tturn);
     }
@@ -122,7 +122,7 @@
                    // printf("The turn time is %d\n", TurnTime[i]);
                     i += 1;
                 }
-                printf("[%s] [%d] [%d]\n",temp->task->name, temp->task->priority, temp->task->burst);
+                printf("Running task = [%s] [%d] [%d] for %d units.\n",temp->task->name, temp->task->priority, temp->task->burst, temp->task->burst);
                 delete(&hh, temp->task);
                 temp = temp->next;
             }

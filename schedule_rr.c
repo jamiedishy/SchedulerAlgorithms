@@ -9,6 +9,7 @@
 
 
     int WTime[SIZE];
+    int wait[SIZE];
     int TTime[SIZE];
     int bTime[SIZE];
     int twait = 0;
@@ -130,11 +131,9 @@
 
     twait = twait / number;
     tturn = tturn / number;
-    printf("the value of number is %d\n", number);
+    //printf("the value of number is %d\n", number);
     printf("Average Wait Time: %d\n", twait);
     printf("Average Turnaround Time: %d\n", tturn);
         
-
     }
-        
 

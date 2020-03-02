@@ -89,7 +89,7 @@
     void printing() {
         node = head;
         while (node != NULL) {
-            printf("[%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
+            printf("Running task = [%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
             node = node->next;
         }
     }

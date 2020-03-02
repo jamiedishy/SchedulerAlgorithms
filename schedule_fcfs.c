@@ -21,7 +21,7 @@
             node -> task -> priority = prty;
             node -> task -> burst = brst;
 
-            printf("[%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
+            printf("Running task = [%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
             
             head = node;
             tail = head;
@@ -33,7 +33,7 @@
             node -> task -> priority = prty;
             node -> task -> burst = brst;
 
-            printf("[%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
+            printf("Running task = [%s] [%d] [%d]\n",node->task->name, node->task->priority, node->task->burst);
 
             tail -> next = node;
             tail = node;
