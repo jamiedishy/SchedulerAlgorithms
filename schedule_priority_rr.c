@@ -96,6 +96,7 @@
         // printf("nimber of nodes is %d\n", numberNodes);
         printf("Average Wait Time: %d\n", twait);
         printf("Average Turnaround Time: %d\n", tturn);
+        printf("Average Response Time: %d\n", twait);
     }
 
     void printing(struct node * h) {
