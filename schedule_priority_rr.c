@@ -18,6 +18,7 @@
     int twait = 0;
     int tturn = 0;
     int i = 0;
+    int iteration = 0;
 
     int flag = 0;
     int count = 0;
@@ -66,7 +67,7 @@
         int temppriority;
         int tempburst;
         node = head;
-        int i = 10;
+        int i = 100;
 
         while (i >= 0) {
             node = head;
@@ -95,6 +96,10 @@
         }
         //count = 0;
         printing(hh);
+        twait = twait / 8;
+    tturn = tturn / 8;
+    printf("Average Wait Time: %d\n", twait);
+    printf("Average Turnaround Time: %d\n", tturn);
     }
 
     void printing(struct node * h) {
@@ -104,7 +109,6 @@
         while (temp != NULL) {
             if (temp == tail || temp->task->priority != temp->next->task->priority) {
                 count = 0;
-               // printf("count is 0\n");
                 if (temp == head) {
                     WTime[i] = 0;
                     bTime[i] = temp->task->burst;
@@ -126,79 +130,68 @@
                 delete(&hh, temp->task);
                 temp = temp->next;
             }
-            else if (temp->task->priority == temp->next->task->priority) {
-                //temp = temp->next;
-                //printf("hihihihihih\n");
-                
+            else if (temp->task->priority == temp->next->task->priority) {  
                 rr(temp, temp->task->priority);
                 count += 1;
-                //printf("count is %d\n", count);
-                 //printf("temp is jfdsalf;jskdla;fjdsk %d\n", (*temp)->task->name);
                 if (flag == 1) {
                     while (count > 0) {
                         count -= 1;
                         temp = temp -> next; 
                     }
                 }
-            }   
+                if (!temp->task->burst > 0) {
+                break;
+                }
+            }    
         }      
     }
 
     void rr(struct node * t, int prty) {
         struct node * temp = NULL;
         temp = t;
-        int p = prty;
-
-        //printf("p is %d\n", p);
-
 
         while (temp->task->priority == prty) {
             if (temp->task->burst - 10 > 0) {
                     flag = 0;
                     printf("Running task = [%s] [%d] [%d] for %d units.\n",temp->task->name, temp->task->priority, temp->task->burst, 10);
-                    //run(temp->task, 10);
+                    if (iteration == 0 && temp->task->name == hh->task->name) {
+                        WTime[i] = 0;
+                        iteration += 1;
+                    }
+                    else {
+                        WTime[i] = bTime[i-1] + WTime[i-1];
+                    }
                     temp->task->burst -= 10;
-                    WTime[i] = bTime[i-1] + WTime[i-1];
                     bTime[i] = 10;
                     TTime[i] = bTime[i] + WTime[i];
                     tturn += TTime[i];
                     twait += WTime[i];
                     if (temp->next == tail && tail->task->burst - 10 <= 0) {
-                        printf("Running task = [%s] [%d] [%d] for %d units.\n",tail->task->name, tail->task->priority, tail->task->burst, tail->task->burst);
-                        //run(tail->task, tail->task->burst);                   
+                        printf("Running task = [%s] [%d] [%d] for %d units.\n",tail->task->name, tail->task->priority, tail->task->burst, tail->task->burst);                
                         temp->next = NULL;
+                    }
+                    if (temp->next == NULL) {
+                        break;
                     }
                     temp = temp->next;
             }
             else {
-                    //run(temp->task, temp->task->burst);
-                    //printf("were here\n");
-                    //prty = 100000;
                     printf("Running task = [%s] [%d] [%d] for %d units.\n",temp->task->name, temp->task->priority, temp->task->burst, temp->task->burst);
-                    //temp->task->burst = 0;
+                    temp->task->burst = 0;
                     WTime[i] = bTime[i-1] + WTime[i-1];
                     bTime[i] = temp->task->burst;
                     TTime[i] = bTime[i] + WTime[i];
                     tturn += TTime[i];
                     twait += WTime[i];
                     delete(&hh, temp->task);
-          
+                    if (temp->next == NULL) {
+                        break;
+                    }
+                    else {
                     temp = temp->next;
+                    }
                     flag = 1;
-                    
-                    // DELETE NODE
             }
             i += 1;
         }
-        
-
     }
-
-// [T6] [1] [10]
-// [T2] [3] [25]
-// [T3] [3] [25]
-// [T7] [3] [30]
-// [T1] [4] [20]
-// [T4] [5] [15]
-// [T5] [5] [20]
-// [T8] [10] [25]
